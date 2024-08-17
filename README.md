@@ -38,17 +38,38 @@ Install the required Python libraries using pip:
 pip install python-telegram-bot requests python-dotenv
 ```
 
-#### **4. Bot Commands**
+#### **4. Create a New Telegram Bot and add commands**
 
-The bot has been updated to handle multiple users for both creation and deletion commands:
+1. **Open Telegram and Start a Chat with BotFather**
+   - Search for `@BotFather` in Telegram and start a chat with it.
 
-- **Create Multiple Users**:
-  - Command: `/adduser 'username1' 'username2' ...`
-  - Automatically copies settings from the "settings" user in Emby.
-  
-- **Delete Multiple Users**:
-  - Command: `/deluser 'username1' 'username2' ...`
-  - Deletes users from Emby, Jellyfin, and Jellyseerr.
+2. **Create a New Bot**
+   - Type `/newbot` and press Enter.
+   - Follow the prompts to:
+     - **Name your bot**: Choose a name that will be visible to users.
+     - **Choose a username**: It must end with "bot" (e.g., `MyAwesomeBot` or `MyAwesomeBotBot`).
+
+3. **Copy the API Token**
+   - After creating the bot, BotFather will provide an API token. **Copy this token**; you’ll need to paste it in `.env`
+
+4. **Define Commands with BotFather**
+   - In the chat with BotFather, type `/setcommands` and press Enter.
+   - Select your newly created bot.
+   - When prompted, add the following commands:
+     ```text
+     adduser - Add a new user
+     deluser - Delete an existing user
+     ```
+   - Press Enter to confirm.
+
+5. **Commands Overview**
+    - **Create Multiple Users**:
+    - Command: `/adduser 'username1' 'username2' ...`
+    - Automatically copies settings from the "settings" user in Emby.
+   
+    - **Delete Multiple Users**:
+    - Command: `/deluser 'username1' 'username2' ...`
+    - Deletes users from Emby, Jellyfin, and Jellyseerr.
 
 #### **5. Running the Bot** for testing
 Run the bot using Python:
