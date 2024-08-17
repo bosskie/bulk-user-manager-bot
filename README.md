@@ -392,7 +392,7 @@ python3 telegram_bot.py
 The bot will start and be ready. 
 
 You can now type /adduser or /deluser in your Telegram bot chat to check.
-It should return this message `Usage: /adduser 'username1' 'username2' ...`
+It should return this message `Usage: /adduser username1 username2 ...`
 
 ## Setting up Systemd service as a background service (Recommended)
 To ensure the bot runs automatically and reliably on your Linux system, we set it up as a `systemd` service. This allows the bot to start on boot, restart automatically on failure, and be easily managed through system commands.
