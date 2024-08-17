@@ -11,6 +11,10 @@ This Telegram bot allows you to bulk add/delete users across Emby, Jellyfin, and
 - password for all these will be the username. If you create a user `ABC` password will be `ABC`
 - Only For Emby, The user configuration is copied from a existing user you specify in `.env` file.
 
+> **If you don't want Emby. You can easily quote out in the `.env` file. Same for Jellyfin or Jellyseerr.
+> But Jellyseerr is depends on Jellyfin, Because it imports the Jellyfin user not creates its own.. 
+> I prefer Jellyfin users to be imported because Jellyseerr native user require `email id`**
+
 ## **Setup Instructions**
 
 > ### **Prerequisites**
