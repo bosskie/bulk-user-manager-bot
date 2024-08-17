@@ -10,12 +10,12 @@ This Telegram bot allows you to bulk add/delete users across Emby, Jellyfin, and
 
 ## **Setup Instructions**
 
-### **[a] - Prerequisites**
-- Python 3.7+
-- Telegram bot token — from [BotFather](https://core.telegram.org/bots#botfather)
-- API keys and URLs for Emby, Jellyfin, and Jellyseerr
+> ### **Prerequisites**
+> - Python 3.7+
+> - Telegram bot token — from [BotFather](https://core.telegram.org/bots#botfather)
+> - API keys and URLs for Emby, Jellyfin, and Jellyseerr
 
-### **[b] - Create a `.env` File**
+### **[a] - Create a `.env` File**
 Create a `.env` file in the same directory as your script with the following content:
 
 ```plaintext
@@ -31,14 +31,14 @@ SETTINGS_USER=settings  # The name of the emby user whose settings are copied
 
 Replace the placeholder values with your actual tokens, API keys, and server URLs.
 
-### **[c] - Install Required Python Libraries**
+### **[b] - Install Required Python Libraries**
 Install the required Python libraries using pip:
 
 ```bash
 pip install python-telegram-bot requests python-dotenv
 ```
 
-### **[d] - Create a New Telegram Bot and add commands**
+### **[c] - Create a New Telegram Bot and add commands**
 
 1. **Open Telegram and Start a Chat with BotFather**
    - Search for `@BotFather` in Telegram and start a chat with it.
@@ -71,7 +71,7 @@ pip install python-telegram-bot requests python-dotenv
     - Command: `/deluser <username1> <username2> ...`
     - Deletes users from Emby, Jellyfin, and Jellyseerr.
 
-### **[e] - Bot Script:**
+### **[d] - Bot Script:**
 > **CLICK TO TOGGLE** the script
 <details>
 <summary>Telegram bot script: ⬇️ </summary>
@@ -326,7 +326,7 @@ if __name__ == '__main__':
 source: ..emby user config api.. https://emby.media/community/index.php?/topic/127981-create-a-new-user-with-emby-api/
 </details>
 
-### **[f] - Running the Bot for testing**
+### **[e] - Running the Bot for testing**
 Run the bot using Python:
 
 ```bash
