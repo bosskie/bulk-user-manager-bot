@@ -4,7 +4,7 @@
 ## **Overview**
 
 This Telegram bot allows you to manage users across Emby, Jellyfin, and Jellyseerr services. The bot provides commands to add and delete users, with the following features:
-- **Emby**: New users are created with settings copied from an existing "settings" user.
+- **Emby**: New users are created with configuration copied from an existing user named `settings` (You can specify different user to pull settings from)
 - **Jellyfin**: New users are created with a username and password.
 - **Jellyseerr**: Jellyfin users are imported into Jellyseerr after creation.
 
@@ -12,7 +12,7 @@ This Telegram bot allows you to manage users across Emby, Jellyfin, and Jellysee
 
 ### **[a] - Prerequisites**
 - Python 3.7+
-- Telegram bot token (from [BotFather]](https://core.telegram.org/bots#botfather))
+- Telegram bot token — from [BotFather](https://core.telegram.org/bots#botfather)
 - API keys and URLs for Emby, Jellyfin, and Jellyseerr
 
 ### **[b] - Create a `.env` File**
