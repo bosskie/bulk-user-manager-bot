@@ -361,10 +361,10 @@ To ensure the bot runs automatically and reliably on your Linux system, we set i
 
    [Service]
    User=your_user # your user 
-   WorkingDirectory=/path/to/your/script # where your .py script is located
-   ExecStart=/path/to/your/venv/bin/python3 /path/to/your/script/telegram_bot.py # command that runs in short 'python3 telegram_bot2.py'
+   WorkingDirectory=/path/to/your/script # where your telegram_bot.py script is located
+   ExecStart=/path/to/your/venv/bin/python3 /path/to/your/script/telegram_bot.py # command that runs in short 'python3 telegram_bot.py'
    Restart=always
-   EnvironmentFile=/path/to/your/script/.env # create .env where your .py script is
+   EnvironmentFile=/path/to/your/script/.env # create .env where your telegram_bot.py script is
 
    [Install]
    WantedBy=multi-user.target
