@@ -19,7 +19,7 @@ SETTINGS_USER = os.getenv('SETTINGS_USER', 'settings')  # Default to 'settings' 
 # Command to add multiple users
 async def add_user(update: Update, context):
     if len(context.args) < 1:
-        await update.message.reply_text("Usage: /adduser 'username1' 'username2' ...")
+        await update.message.reply_text("Usage: /adduser username1 username2 ...")
         return
 
     usernames = context.args
@@ -69,7 +69,7 @@ async def add_user(update: Update, context):
 # Command to delete multiple users
 async def del_user(update: Update, context):
     if len(context.args) < 1:
-        await update.message.reply_text("Usage: /deluser 'username1' 'username2' ...")
+        await update.message.reply_text("Usage: /deluser username1 username2 ...")
         return
 
     usernames = context.args
