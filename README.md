@@ -421,6 +421,6 @@ To ensure the bot runs automatically and reliably on your Linux system, we set i
   ```
 
 ---
-## **4. Conclusion**
+## **Conclusion**
 
 By setting up the Telegram bot as a `systemd` service with environment variables loaded from a `.env` file, you ensure a reliable, automated solution that runs consistently across system reboots. The bot can now efficiently manage multiple users in Emby, Jellyfin, and Jellyseerr, making it a powerful tool for server administrators.
