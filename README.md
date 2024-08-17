@@ -1,5 +1,5 @@
 
-# **BulkAdd / Delete Emby, Jellyfin, and Jellyseer Users Using TelegramBot**
+# **Bulk Add/Delete Emby, Jellyfin, and Jellyseer Users Using TelegramBot**
 
 ![](https://github.com/user-attachments/assets/4904b18e-0b38-43a6-9487-086b09764059)
 
