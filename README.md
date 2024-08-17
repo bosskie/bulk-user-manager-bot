@@ -167,13 +167,26 @@ async def create_emby_user(username, password):
     user_data = {
         'Name': username,
         'Password': password,
+        'PasswordResetRequired': False,  # Indicate that the user does not need to reset the password
         'CopyFromUserId': settings_user_id,
         'UserCopyOptions': ["UserPolicy", "UserConfiguration"]
     }
 
     create_user_url = f"{EMBY_URL}/emby/Users/New"
     response = requests.post(create_user_url, headers=headers, json=user_data)
-    return response.status_code == 200
+
+    if response.status_code != 200:
+        return False
+
+    # Setting the password separately if needed
+    password_url = f"{EMBY_URL}/emby/Users/{response.json()['Id']}/Password"
+    password_data = {
+        "CurrentPw": "",  # No current password, since it's a new user
+        "NewPw": password
+    }
+    password_response = requests.post(password_url, headers=headers, json=password_data)
+
+    return password_response.status_code == 204
 
 # Function to create Jellyfin user
 async def create_jellyfin_user(username, password):
