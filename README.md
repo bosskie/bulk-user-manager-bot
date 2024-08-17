@@ -1,21 +1,21 @@
 
-## **Telegram Bot to add / delete Emby, Jellyfin, and Jellyseer Users**
+# **Telegram Bot-Add / Delete Emby, Jellyfin, and Jellyseer Users**
 
-### **Overview**
+## **Overview**
 
 This Telegram bot allows you to manage users across Emby, Jellyfin, and Jellyseerr services. The bot provides commands to add and delete users, with the following features:
 - **Emby**: New users are created with settings copied from an existing "settings" user.
 - **Jellyfin**: New users are created with a username and password.
 - **Jellyseerr**: Jellyfin users are imported into Jellyseerr after creation.
 
-### **Setup Instructions**
+## **Setup Instructions**
 
-#### **1. Prerequisites**
+### **[a] - Prerequisites**
 - Python 3.7+
 - Telegram bot token (from [BotFather]](https://core.telegram.org/bots#botfather))
 - API keys and URLs for Emby, Jellyfin, and Jellyseerr
 
-#### **2. Create a `.env` File**
+### **[b] - Create a `.env` File**
 Create a `.env` file in the same directory as your script with the following content:
 
 ```plaintext
@@ -31,14 +31,14 @@ SETTINGS_USER=settings  # The name of the emby user whose settings are copied
 
 Replace the placeholder values with your actual tokens, API keys, and server URLs.
 
-#### **3. Install Required Python Libraries**
+### **[c] - Install Required Python Libraries**
 Install the required Python libraries using pip:
 
 ```bash
 pip install python-telegram-bot requests python-dotenv
 ```
 
-#### **4. Create a New Telegram Bot and add commands**
+### **[d] - Create a New Telegram Bot and add commands**
 
 1. **Open Telegram and Start a Chat with BotFather**
    - Search for `@BotFather` in Telegram and start a chat with it.
@@ -71,17 +71,7 @@ pip install python-telegram-bot requests python-dotenv
     - Command: `/deluser 'username1' 'username2' ...`
     - Deletes users from Emby, Jellyfin, and Jellyseerr.
 
-#### **5. Running the Bot** for testing
-Run the bot using Python:
-
-```bash
-python3 telegram_bot.py
-```
-
-The bot will start and be ready to manage users via the provided commands.
-
-### **Code Summary**
-#### **Bot Script:**
+### **[e] - Bot Script:**
 Here’s the full Telegram bot script:
 
 ```python
@@ -320,11 +310,23 @@ if __name__ == '__main__':
 ```
 source: ..emby user config api.. https://emby.media/community/index.php?/topic/127981-create-a-new-user-with-emby-api/
 
-### Setting up Systemd service as a background service (Recommended)
-To ensure the bot runs automatically and reliably on your Linux system, we set it up as a `systemd` service. This allows the bot to start on boot, restart automatically on failure, and be easily managed through system commands.
-#### **1. Setting Up the Bot as a Systemd Service**
+### **[f] - Running the Bot for testing**
+Run the bot using Python:
 
-##### **1.1. Creating the Systemd Service File**
+```bash
+python3 telegram_bot.py
+```
+
+The bot will start and be ready. 
+
+You can now type /adduser or /deluser in your Telegram bot chat to check.
+It should return this message `Usage: /adduser 'username1' 'username2' ...`
+
+## Setting up Systemd service as a background service (Recommended)
+To ensure the bot runs automatically and reliably on your Linux system, we set it up as a `systemd` service. This allows the bot to start on boot, restart automatically on failure, and be easily managed through system commands.
+### **1. Setting Up the Bot as a Systemd Service**
+
+#### **1.1. Creating the Systemd Service File**
 
 - **Create the service file** at `/etc/systemd/system/telegram_bot.service`:
 
@@ -350,30 +352,11 @@ To ensure the bot runs automatically and reliably on your Linux system, we set i
    WantedBy=multi-user.target
    ```
 
-> [!What to change in service file ?]
+> What to change in service file ?
 >    - **User**: Replace `your_user` with the username under which the service should run.
 >    - **WorkingDirectory**: Set the working directory where your script resides.
 >    - **ExecStart**: The command to start your bot, pointing to the Python interpreter in your virtual environment.
 >    - **EnvironmentFile**: The path to your `.env` file containing environment variables.
-
-> [!Example ]
->    -  In my case I used this service file on [[Saltbox]] server.
-
-```python
-   [Unit]
-   Description=Telegram Bot Service
-   After=network.target
-
-   [Service]
-   User=root
-   WorkingDirectory=/home/bosskie/myscripts/tg-emby-jfin-userbot/
-   ExecStart=/home/bosskie/myenv/bin/python3 /home/bosskie/myscripts/tg-emby-jfin-userbot/telegram_bot.py
-   Restart=always
-   EnvironmentFile=/home/bosskie/myscripts/tg-emby-jfin-userbot/.env
-
-   [Install]
-   WantedBy=multi-user.target
-   ```
 
 #### **2.2. Enabling and Starting the Service**
 
@@ -401,7 +384,7 @@ To ensure the bot runs automatically and reliably on your Linux system, we set i
    sudo systemctl status telegram_bot.service
    ```
 
-##### **2.3. Managing the Service**
+#### **2.3. Managing the Service**
 
 - **Stop the service**:
 
@@ -422,6 +405,6 @@ To ensure the bot runs automatically and reliably on your Linux system, we set i
   ```
 
 ---
-### **4. Conclusion**
+## **4. Conclusion**
 
 By setting up the Telegram bot as a `systemd` service with environment variables loaded from a `.env` file, you ensure a reliable, automated solution that runs consistently across system reboots. The bot can now efficiently manage multiple users in Emby, Jellyfin, and Jellyseerr, making it a powerful tool for server administrators.
