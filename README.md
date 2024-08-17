@@ -71,11 +71,10 @@ pip install python-telegram-bot requests python-dotenv
 
 5. **Commands Overview**
     - **Create Multiple Users**:
-    - Command: `/adduser <username1> <username2> ...`
+       - Command: `/adduser <username1> <username2> ...`
    
     - **Delete Multiple Users**:
-    - Command: `/deluser <username1> <username2> ...`
-    - Deletes users from Emby, Jellyfin, and Jellyseerr.
+       - Command: `/deluser <username1> <username2> ...`
 
 ### **[d] - Bot Script:**
 > CLICK TO TOGGLE the script
