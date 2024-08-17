@@ -64,11 +64,11 @@ pip install python-telegram-bot requests python-dotenv
 
 5. **Commands Overview**
     - **Create Multiple Users**:
-    - Command: `/adduser 'username1' 'username2' ...`
+    - Command: `/adduser <username1> <username2> ...`
     - Automatically copies settings from the "settings" user in Emby.
    
     - **Delete Multiple Users**:
-    - Command: `/deluser 'username1' 'username2' ...`
+    - Command: `/deluser <username1> <username2> ...`
     - Deletes users from Emby, Jellyfin, and Jellyseerr.
 
 ### **[e] - Bot Script:**
