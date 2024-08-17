@@ -28,7 +28,7 @@ JELLYSEERR_API_KEY=your-jellyseerr-api-key
 EMBY_URL=http://your-emby-server:8096
 JELLYFIN_URL=http://your-jellyfin-server:8096
 JELLYSEERR_URL=http://your-jellyseerr-server:5055
-SETTINGS_USER=settings  # The name of the emby user whose settings are copied
+SETTINGS_USER=settings  # Name of the emby user to copy settings from.
 ```
 
 Replace the placeholder values with your actual tokens, API keys, and server URLs.
