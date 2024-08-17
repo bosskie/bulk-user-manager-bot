@@ -105,51 +105,100 @@ SETTINGS_USER = os.getenv('SETTINGS_USER', 'settings')  # Default to 'settings' 
 # Command to add multiple users
 async def add_user(update: Update, context):
     if len(context.args) < 1:
-        await update.message.reply_text("Usage: /adduser 'username1' 'username2' ...")
+        await update.message.reply_text("Usage: /adduser username1 username2 ...")
         return
 
     usernames = context.args
-    failed_users = []
+    emby_success = []
+    jellyfin_success = []
+    jellyseerr_success = []
 
     for username in usernames:
         password = username  # Automatically use the username as the password
 
-        emby_result = await create_emby_user(username, password)
-        jellyfin_result = await create_jellyfin_user(username, password)
+        emby_result = jellyfin_result = jellyseerr_result = True
 
-        if emby_result and jellyfin_result:
-            jellyseerr_result = await import_jellyfin_users_to_jellyseerr(username)
-            if not jellyseerr_result:
-                failed_users.append(username)
-        else:
-            failed_users.append(username)
+        if EMBY_API_KEY and EMBY_URL:
+            try:
+                emby_result = await create_emby_user(username, password)
+                if emby_result:
+                    emby_success.append(username)
+            except Exception as e:
+                emby_result = False
 
-    if not failed_users:
-        await update.message.reply_text(f"All users created successfully in Emby, Jellyfin, and Jellyseerr.")
-    else:
-        await update.message.reply_text(f"Failed to create or import the following users: {', '.join(failed_users)}")
+        if JELLYFIN_API_KEY and JELLYFIN_URL:
+            try:
+                jellyfin_result = await create_jellyfin_user(username, password)
+                if jellyfin_result:
+                    jellyfin_success.append(username)
+            except Exception as e:
+                jellyfin_result = False
+
+        if JELLYSEERR_API_KEY and JELLYSEERR_URL and jellyfin_result:
+            try:
+                jellyseerr_result = await import_jellyfin_users_to_jellyseerr(username)
+                if jellyseerr_result:
+                    jellyseerr_success.append(username)
+            except Exception as e:
+                jellyseerr_result = False
+
+    messages = []
+    if emby_success:
+        messages.append(f"Following Emby users created successfully:\n{' '.join(emby_success)}")
+    if jellyfin_success:
+        messages.append(f"Following Jellyfin users created successfully:\n{' '.join(jellyfin_success)}")
+    if jellyseerr_success:
+        messages.append(f"Following Jellyseerr users imported successfully:\n{' '.join(jellyseerr_success)}")
+
+    await update.message.reply_text("\n".join(messages))
 
 # Command to delete multiple users
 async def del_user(update: Update, context):
     if len(context.args) < 1:
-        await update.message.reply_text("Usage: /deluser 'username1' 'username2' ...")
+        await update.message.reply_text("Usage: /deluser username1 username2 ...")
         return
 
     usernames = context.args
-    failed_users = []
+    emby_success = []
+    jellyfin_success = []
+    jellyseerr_success = []
 
     for username in usernames:
-        emby_result = await delete_emby_user(username)
-        jellyfin_result = await delete_jellyfin_user(username)
-        jellyseerr_result = await delete_jellyseerr_user(username)
+        emby_result = jellyfin_result = jellyseerr_result = True
 
-        if not (emby_result and jellyfin_result and jellyseerr_result):
-            failed_users.append(username)
+        if EMBY_API_KEY and EMBY_URL:
+            try:
+                emby_result = await delete_emby_user(username)
+                if emby_result:
+                    emby_success.append(username)
+            except Exception as e:
+                emby_result = False
 
-    if not failed_users:
-        await update.message.reply_text(f"All users deleted successfully from Emby, Jellyfin, and Jellyseerr.")
-    else:
-        await update.message.reply_text(f"Failed to delete the following users: {', '.join(failed_users)}")
+        if JELLYFIN_API_KEY and JELLYFIN_URL:
+            try:
+                jellyfin_result = await delete_jellyfin_user(username)
+                if jellyfin_result:
+                    jellyfin_success.append(username)
+            except Exception as e:
+                jellyfin_result = False
+
+        if JELLYSEERR_API_KEY and JELLYSEERR_URL:
+            try:
+                jellyseerr_result = await delete_jellyseerr_user(username)
+                if jellyseerr_result:
+                    jellyseerr_success.append(username)
+            except Exception as e:
+                jellyseerr_result = False
+
+    messages = []
+    if emby_success:
+        messages.append(f"Following Emby users deleted successfully:\n{' '.join(emby_success)}")
+    if jellyfin_success:
+        messages.append(f"Following Jellyfin users deleted successfully:\n{' '.join(jellyfin_success)}")
+    if jellyseerr_success:
+        messages.append(f"Following Jellyseerr users deleted successfully:\n{' '.join(jellyseerr_success)}")
+
+    await update.message.reply_text("\n".join(messages))
 
 # Function to create Emby user with copied settings from 'settings' user
 async def create_emby_user(username, password):
@@ -279,7 +328,7 @@ async def delete_jellyseerr_user(username):
         url = f"{JELLYSEERR_URL}/api/v1/user/{user_id}"
         response = requests.delete(url, headers=headers)
 
-        # Check for success status codes (204 or 200)
+                # Check for success status codes (204 or 200)
         if response.status_code in [200, 204]:
             return True
         else:
