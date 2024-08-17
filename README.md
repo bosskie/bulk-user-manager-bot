@@ -72,7 +72,9 @@ pip install python-telegram-bot requests python-dotenv
     - Deletes users from Emby, Jellyfin, and Jellyseerr.
 
 ### **[e] - Bot Script:**
-Here’s the full Telegram bot script:
+> **CLICK TO TOGGLE** the script
+<details>
+<summary>Telegram bot script: ⬇️ </summary>
 
 ```python
 import os
@@ -309,6 +311,7 @@ if __name__ == '__main__':
     main()
 ```
 source: ..emby user config api.. https://emby.media/community/index.php?/topic/127981-create-a-new-user-with-emby-api/
+</details>
 
 ### **[f] - Running the Bot for testing**
 Run the bot using Python:
