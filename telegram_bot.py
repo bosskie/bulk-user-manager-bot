@@ -15,9 +15,19 @@ EMBY_URL = os.getenv('EMBY_URL')
 JELLYFIN_URL = os.getenv('JELLYFIN_URL')
 JELLYSEERR_URL = os.getenv('JELLYSEERR_URL')
 SETTINGS_USER = os.getenv('SETTINGS_USER', 'settings')  # Default to 'settings' if not set
+AUTHORIZED_USERS = list(map(int, os.getenv('AUTHORIZED_USERS', '').split(',')))
+    
+# Function to check if the user is authorized
+def is_authorized(user_id):
+    print(f"User ID: {user_id}")  # This will print the user ID to your console or logs
+    return user_id in AUTHORIZED_USERS
 
 # Command to add multiple users
 async def add_user(update: Update, context):
+    if not is_authorized(update.message.from_user.id):
+        await update.message.reply_text("You are not authorized to use this bot.")
+        return
+
     if len(context.args) < 1:
         await update.message.reply_text("Usage: /adduser username1 username2 ...")
         return
@@ -68,6 +78,10 @@ async def add_user(update: Update, context):
 
 # Command to delete multiple users
 async def del_user(update: Update, context):
+    if not is_authorized(update.message.from_user.id):
+        await update.message.reply_text("You are not authorized to use this bot.")
+        return
+
     if len(context.args) < 1:
         await update.message.reply_text("Usage: /deluser username1 username2 ...")
         return
@@ -242,7 +256,7 @@ async def delete_jellyseerr_user(username):
         url = f"{JELLYSEERR_URL}/api/v1/user/{user_id}"
         response = requests.delete(url, headers=headers)
 
-                # Check for success status codes (204 or 200)
+        # Check for success status codes (204 or 200)
         if response.status_code in [200, 204]:
             return True
         else:
@@ -251,6 +265,7 @@ async def delete_jellyseerr_user(username):
     else:
         print("Unexpected response format:", users)
         return False
+
 
 # Function to import Jellyfin users into Jellyseerr
 async def import_jellyfin_users_to_jellyseerr(new_username):
