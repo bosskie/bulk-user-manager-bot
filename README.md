@@ -17,6 +17,7 @@ This Telegram bot allows you to bulk add/delete users across Emby, Jellyfin, and
 
 ## **Setup Instructions**
 
+> [!NOTE]
 > ### **Prerequisites**
 > - Python 3.7+
 > - Telegram bot token — from [BotFather](https://core.telegram.org/bots#botfather)
@@ -24,6 +25,11 @@ This Telegram bot allows you to bulk add/delete users across Emby, Jellyfin, and
 
 ### **[a] - Create a `.env` File**
 Create a `.env` file in the same directory as your script with the following content:
+
+>[!NOTE]
+> To Get Telegram ChatID:
+>- Run this [chatIDrobot](https://t.me/chatIDrobot)
+>- It will show like this,`chat_id: 9xxsx3123`
 
 ```plaintext
 TELEGRAM_API_TOKEN=your-telegram-api-token
@@ -34,6 +40,7 @@ EMBY_URL=http://your-emby-server:8096
 JELLYFIN_URL=http://your-jellyfin-server:8096
 JELLYSEERR_URL=http://your-jellyseerr-server:5055
 SETTINGS_USER=settings  # Name of the emby user to copy settings from.
+AUTHORIZED_USERS=your-telegram-chatid  # Paste the chat_id you got in previous step — for multiple chat ids, use commas to seperate. Example: userID-01,userID-02,userID-03
 ```
 
 Replace the placeholder values with your actual tokens, API keys, and server URLs.
@@ -99,9 +106,19 @@ EMBY_URL = os.getenv('EMBY_URL')
 JELLYFIN_URL = os.getenv('JELLYFIN_URL')
 JELLYSEERR_URL = os.getenv('JELLYSEERR_URL')
 SETTINGS_USER = os.getenv('SETTINGS_USER', 'settings')  # Default to 'settings' if not set
+AUTHORIZED_USERS = list(map(int, os.getenv('AUTHORIZED_USERS', '').split(',')))
+    
+# Function to check if the user is authorized
+def is_authorized(user_id):
+    print(f"User ID: {user_id}")  # This will print the user ID to your console or logs
+    return user_id in AUTHORIZED_USERS
 
 # Command to add multiple users
 async def add_user(update: Update, context):
+    if not is_authorized(update.message.from_user.id):
+        await update.message.reply_text("You are not authorized to use this bot.")
+        return
+
     if len(context.args) < 1:
         await update.message.reply_text("Usage: /adduser username1 username2 ...")
         return
@@ -152,6 +169,10 @@ async def add_user(update: Update, context):
 
 # Command to delete multiple users
 async def del_user(update: Update, context):
+    if not is_authorized(update.message.from_user.id):
+        await update.message.reply_text("You are not authorized to use this bot.")
+        return
+
     if len(context.args) < 1:
         await update.message.reply_text("Usage: /deluser username1 username2 ...")
         return
@@ -326,7 +347,7 @@ async def delete_jellyseerr_user(username):
         url = f"{JELLYSEERR_URL}/api/v1/user/{user_id}"
         response = requests.delete(url, headers=headers)
 
-                # Check for success status codes (204 or 200)
+        # Check for success status codes (204 or 200)
         if response.status_code in [200, 204]:
             return True
         else:
@@ -335,6 +356,7 @@ async def delete_jellyseerr_user(username):
     else:
         print("Unexpected response format:", users)
         return False
+
 
 # Function to import Jellyfin users into Jellyseerr
 async def import_jellyfin_users_to_jellyseerr(new_username):
